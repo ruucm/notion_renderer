@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "notion_renderer"
-version = "0.2.18"
+version = "0.2.19"
 description = "notion-py to MDX and REST API"
 readme = "README.md"
 authors = ["notion_renderer <ruucm.a@gmail.com>"]
