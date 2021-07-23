@@ -1,6 +1,6 @@
 import json
 
-import notion.client
+from .notion.client import NotionClient
 
 
 class JsonPage:
@@ -11,7 +11,7 @@ class JsonPage:
 def objectify_notion_collection(token_v2, collectionUrl, properties):
     """Convert a Notion collection to a Python object."""
 
-    client = notion.client.NotionClient(token_v2=token_v2)
+    client = NotionClient(token_v2=token_v2)
     cv = client.get_collection_view(collectionUrl)
     properties = properties.split(",")
 
@@ -35,7 +35,7 @@ def objectify_notion_collection(token_v2, collectionUrl, properties):
 def objectify_notion_blocks(token_v2, pageId):
     """Convert a Notion Page to a Python object."""
 
-    client = notion.client.NotionClient(token_v2)
+    client = NotionClient(token_v2)
     page = client.get_block("https://www.notion.so/" + pageId)
 
     results = []
