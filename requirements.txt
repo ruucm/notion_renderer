@@ -5,10 +5,10 @@ pygments==2.9.0; python_version >= "3.6" and python_version < "4.0"
 rich==10.6.0; python_version >= "3.6" and python_version < "4.0"
 shellingham==1.4.0; python_version >= "3.6"
 typer==0.3.2; python_version >= "3.6"
-requests==2.25.1;
-cached_property==1.5.2;
-commonmark==0.9.1;
-bs4==0.0.1;
-python-slugify==4.0.1;
-tzlocal==2.1;
-dictdiffer==0.8.1;
+requests==2.25.1; python_version >= "3.6"
+cached_property==1.5.2; python_version >= "3.6"
+commonmark==0.9.1; python_version >= "3.6"
+bs4==0.0.1; python_version >= "3.6"
+python-slugify==4.0.1; python_version >= "3.6"
+tzlocal==2.1; python_version >= "3.6"
+dictdiffer==0.8.1; python_version >= "3.6"
