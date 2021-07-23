@@ -1,6 +1,6 @@
 import json
 
-from notion.client import NotionClient
+from .notion.client import NotionClient
 
 
 class JsonPage:

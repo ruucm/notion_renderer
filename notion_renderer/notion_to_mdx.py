@@ -2,13 +2,10 @@ import os
 
 from PyInquirer import print_json, prompt
 
-from notion_renderer.renderer import (
-    objectify_notion_blocks,
-    objectify_notion_collection,
-)
+from notion_renderer.renderer import objectify_notion_blocks
 
 
-def main():
+def convert():
     # start_prompt
     questions = [
         {
@@ -51,4 +48,4 @@ title: "%s"
 
 
 if __name__ == "__main__":
-    main()
+    convert()

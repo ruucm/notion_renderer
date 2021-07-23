@@ -9,6 +9,7 @@ from rich.console import Console
 
 from notion_renderer import version
 from notion_renderer.example import hello
+from notion_renderer.notion_to_mdx import convert
 
 
 class Color(str, Enum):
@@ -35,32 +36,9 @@ def version_callback(print_version: bool) -> None:
         raise typer.Exit()
 
 
-@app.command(name="")
-def main(
-    name: str = typer.Option(..., help="Person to greet."),
-    color: Optional[Color] = typer.Option(
-        None,
-        "-c",
-        "--color",
-        "--colour",
-        case_sensitive=False,
-        help="Color for print. If not specified then choice will be random.",
-    ),
-    print_version: bool = typer.Option(
-        None,
-        "-v",
-        "--version",
-        callback=version_callback,
-        is_eager=True,
-        help="Prints the version of the notion_renderer package.",
-    ),
-) -> None:
+def main():
     """Print a greeting with a giving name."""
-    if color is None:
-        color = choice(list(Color))
-
-    greeting: str = hello(name)
-    console.print(f"[bold {color}]{greeting}[/]")
+    convert()
 
 
 if __name__ == "__main__":
