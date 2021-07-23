@@ -36,6 +36,7 @@ python = "^3.9"
 
 typer = {extras = ["all"], version = "^0.3.2"}
 rich = "^10.6.0"
+cached-property = "^1.5.2"
 
 [tool.poetry.dev-dependencies]
 bandit = "^1.7.0"
