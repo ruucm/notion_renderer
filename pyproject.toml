@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "notion_renderer"
-version = "0.2.1"
+version = "0.2.2"
 description = "Awesome `notion_renderer` is a Python cli/package created with https://github.com/TezRomacH/python-package-template"
 readme = "README.md"
 authors = ["notion_renderer <ruucm.a@gmail.com>"]
