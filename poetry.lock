@@ -348,6 +348,23 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "notion"
+version = "0.0.28"
+description = "Unofficial Python API client for Notion.so"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+bs4 = "*"
+cached-property = "*"
+commonmark = "*"
+dictdiffer = "*"
+python-slugify = "*"
+requests = "*"
+tzlocal = "*"
+
+[[package]]
 name = "packaging"
 version = "21.0"
 description = "Core utilities for Python packages"
@@ -682,7 +699,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "tomli"
-version = "1.0.4"
+version = "1.1.0"
 description = "A lil' TOML parser"
 category = "dev"
 optional = false
@@ -777,7 +794,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "4b7177727dfd5a283b8b7ca07e3c076f80afba5184f2d10418715237dd1d3b06"
+content-hash = "e3614c1820018b6aee9d6e73632a7203d93569209a455330e6dd39b6fee770c5"
 
 [metadata.files]
 appdirs = [
@@ -948,6 +965,10 @@ mypy-extensions = [
 nodeenv = [
     {file = "nodeenv-1.6.0-py2.py3-none-any.whl", hash = "sha256:621e6b7076565ddcacd2db0294c0381e01fd28945ab36bcf00f41c5daf63bef7"},
     {file = "nodeenv-1.6.0.tar.gz", hash = "sha256:3ef13ff90291ba2a4a7a4ff9a979b63ffdd00a464dbe04acf0ea6471517a4c2b"},
+]
+notion = [
+    {file = "notion-0.0.28-py3-none-any.whl", hash = "sha256:cc380ea2ffe70ee8d5f19244df910cc79ea56a577ca569553d30f8798f0b5b61"},
+    {file = "notion-0.0.28.tar.gz", hash = "sha256:a6c511e1055bb69f05d75220f3f6a5de377a52d42ae38186c3138557c6b4942a"},
 ]
 packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},
@@ -1140,8 +1161,8 @@ toml = [
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 tomli = [
-    {file = "tomli-1.0.4-py3-none-any.whl", hash = "sha256:0713b16ff91df8638a6a694e295c8159ab35ba93e3424a626dd5226d386057be"},
-    {file = "tomli-1.0.4.tar.gz", hash = "sha256:be670d0d8d7570fd0ea0113bd7bb1ba3ac6706b4de062cc4c952769355c9c268"},
+    {file = "tomli-1.1.0-py3-none-any.whl", hash = "sha256:f4a182048010e89cbec0ae4686b21f550a7f2903f665e34a6de58ec15424f919"},
+    {file = "tomli-1.1.0.tar.gz", hash = "sha256:33d7984738f8bb699c9b0a816eb646a8178a69eaa792d258486776a5d21b8ca5"},
 ]
 typer = [
     {file = "typer-0.3.2-py3-none-any.whl", hash = "sha256:ba58b920ce851b12a2d790143009fa00ac1d05b3ff3257061ff69dbdfc3d161b"},

@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "notion_renderer"
-version = "0.2.7"
+version = "0.2.8"
 description = "Awesome `notion_renderer` is a Python cli/package created with https://github.com/TezRomacH/python-package-template"
 readme = "README.md"
 authors = ["notion_renderer <ruucm.a@gmail.com>"]
@@ -44,6 +44,7 @@ python-slugify = "^5.0.2"
 tzlocal = "^2.1"
 dictdiffer = "^0.9.0"
 PyInquirer = "^1.0.3"
+notion = "^0.0.28"
 
 [tool.poetry.dev-dependencies]
 bandit = "^1.7.0"
