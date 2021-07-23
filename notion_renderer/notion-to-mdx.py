@@ -1,7 +1,11 @@
 import os
 
 from PyInquirer import print_json, prompt
-from renderer import objectify_notion_blocks, objectify_notion_collection
+
+from notion_renderer.renderer import (
+    objectify_notion_blocks,
+    objectify_notion_collection,
+)
 
 
 def main():
