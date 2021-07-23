@@ -23,7 +23,7 @@ class Color(str, Enum):
 
 app = typer.Typer(
     name="notion_renderer",
-    help="Awesome `notion_renderer` is a Python cli/package created with https://github.com/TezRomacH/python-package-template",
+    help="notion-py to MDX and REST API",
     add_completion=False,
 )
 console = Console()
@@ -32,7 +32,8 @@ console = Console()
 def version_callback(print_version: bool) -> None:
     """Print the version of the package."""
     if print_version:
-        console.print(f"[yellow]notion_renderer[/] version: [bold blue]{version}[/]")
+        console.print(
+            f"[yellow]notion_renderer[/] version: [bold blue]{version}[/]")
         raise typer.Exit()
 
 

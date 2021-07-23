@@ -2,7 +2,7 @@
 
 default_context:
   project_name: "notion_renderer"
-  project_description: "Awesome `notion_renderer` is a Python cli/package created with https://github.com/TezRomacH/python-package-template"
+  project_description: "notion-py to MDX and REST API"
   organization: "notion_renderer"
   license: "MIT"
   minimal_python_version: 3.5
