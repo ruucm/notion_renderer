@@ -4,7 +4,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ul>
-        <Link href="/">Home</Link>
+        <Link href="/">Home!</Link>
         <br />
         <Link href="/f0e29802a4d14801a62b7cfbbe3a2626">
           f0e29802a4d14801a62b7cfbbe3a2626
