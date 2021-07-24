@@ -16,6 +16,15 @@ title: "%s"
     def update_mdx(self, newText):
         self.text += newText
 
+    def handle_toggle_block(self, block):
+        toggleChildren = block.children
+        self.update_mdx(f"<{block.title}>")
+        for idx, childBlock in enumerate(toggleChildren):
+            self.update_mdx(childBlock.title)
+            if (idx + 1) < len(toggleChildren):
+                self.update_mdx("<br/>")
+        self.update_mdx(f"</{block.title}>")
+
 
 def convert():
     # start_prompt
@@ -68,15 +77,9 @@ def convert():
         elif block.type == "image":
             mdx.update_mdx(handleImage(block.source, idx, postPath))
         elif block.type == "toggle":
-            toggleChildren = block.children
-            mdx.update_mdx(f"<{block.title}>")
-            for idx, childBlock in enumerate(toggleChildren):
-                mdx.update_mdx(childBlock.title)
-                if (idx + 1) < len(toggleChildren):
-                    mdx.update_mdx("<br/>")
-            mdx.update_mdx(f"</{block.title}>")
+            mdx.handle_toggle_block(block)
 
-        mdx.update_mdx("\n")
+        mdx.update_mdx("\n")  # add a newline
 
     file = open(f'{postPath}/{answers["fileName"]}', "w")
     file.write(mdx.text)
