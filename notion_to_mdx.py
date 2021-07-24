@@ -13,7 +13,7 @@ class MDX(object):
 title: "%s"
 ---\n""" % ("My Notion Page")
 
-    def UpdateMDX(self, newText):
+    def update_mdx(self, newText):
         self.text += newText
 
 
@@ -60,23 +60,23 @@ def convert():
 
     for idx, block in enumerate(blocks):
         if block.type == "header":
-            mdx.UpdateMDX("# " + block.title)
+            mdx.update_mdx("# " + block.title)
         elif block.type == "sub_header":
-            mdx.UpdateMDX("## " + block.title)
+            mdx.update_mdx("## " + block.title)
         elif block.type == "text":
-            mdx.UpdateMDX(block.title)
+            mdx.update_mdx(block.title)
         elif block.type == "image":
-            mdx.UpdateMDX(handleImage(block.source, idx, postPath))
+            mdx.update_mdx(handleImage(block.source, idx, postPath))
         elif block.type == "toggle":
             toggleChildren = block.children
-            mdx.UpdateMDX(f"<{block.title}>")
+            mdx.update_mdx(f"<{block.title}>")
             for idx, childBlock in enumerate(toggleChildren):
-                mdx.UpdateMDX(childBlock.title)
+                mdx.update_mdx(childBlock.title)
                 if (idx + 1) < len(toggleChildren):
-                    mdx.UpdateMDX("<br/>")
-            mdx.UpdateMDX(f"</{block.title}>")
+                    mdx.update_mdx("<br/>")
+            mdx.update_mdx(f"</{block.title}>")
 
-        mdx.UpdateMDX("\n")
+        mdx.update_mdx("\n")
 
     file = open(f'{postPath}/{answers["fileName"]}', "w")
     file.write(mdx.text)
