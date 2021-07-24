@@ -1,10 +1,14 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ul>
         <Link href="/">Home</Link>
+        <br />
+        <Link href="/f0e29802a4d14801a62b7cfbbe3a2626">
+          f0e29802a4d14801a62b7cfbbe3a2626
+        </Link>
         <br />
         <Link href="/fbbffdea4b544cde91243d79abf9712c">
           fbbffdea4b544cde91243d79abf9712c
@@ -17,5 +21,5 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       <main>{children}</main>
     </>
-  )
+  );
 }
