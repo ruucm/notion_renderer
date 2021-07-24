@@ -13,7 +13,7 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "mdx": "python3 /Users/ruucm/Desktop/notion_renderer/notion_to_mdx.py"
+    "mdx": "python3 /Users/ruucm/MyDocuments/Carving/tools/notion_renderer/notion_to_mdx.py"
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
