@@ -8,7 +8,7 @@ from urllib.parse import unquote
 import requests
 
 
-def handleImage(source, idx, targetPath):
+def handleImage(source, targetPath):
     url = unquote(source)
 
     for filename in re.findall(r"/([^/]+\.(?:jpg|jpeg|gif|png))", url):
