@@ -53,6 +53,15 @@ title: "%s"
             text += block.title
         elif block.type == "image":
             text += handleImage(block.source, idx, postPath)
+        elif block.type == "toggle":
+            toggleChildren = block.children
+            text += f"<{block.title}>"
+            for idx, childBlock in enumerate(toggleChildren):
+                text += childBlock.title
+                if (idx + 1) < len(toggleChildren):
+                    text += "<br/>"
+            text += f"</{block.title}>"
+
         text += "\n"
 
     file = open(f'{postPath}/index.mdx', "w")

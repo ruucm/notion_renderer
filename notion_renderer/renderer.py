@@ -40,18 +40,21 @@ def objectify_notion_blocks(token_v2, pageId, stringfy=False):
 
     results = []
 
-    for idx, content in enumerate(page.children):
+    for idx, block in enumerate(page.children):
         jsonPage = JsonPage()
-        print("content.type", content.type)
-        setattr(jsonPage, "type", content.type)
+        print("block.type", block.type)
+        setattr(jsonPage, "type", block.type)
         if (
-            content.type == "text"
-            or content.type == "header"
-            or content.type == "sub_header"
+            block.type == "text"
+            or block.type == "header"
+            or block.type == "sub_header"
         ):
-            setattr(jsonPage, "title", content.title)
-        elif content.type == "image":
-            setattr(jsonPage, "source", content.source)
+            setattr(jsonPage, "title", block.title)
+        elif block.type == "image":
+            setattr(jsonPage, "source", block.source)
+        elif block.type == "toggle":
+            setattr(jsonPage, "title", block.title)
+            setattr(jsonPage, "children", block.children)
 
         if (stringfy):
             jsonStr = jsonPage.toJSON()
