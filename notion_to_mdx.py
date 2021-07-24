@@ -4,6 +4,12 @@ from PyInquirer import print_json, prompt
 
 from notion_renderer.renderer import objectify_notion_blocks
 from utils import handleImage
+import json
+
+
+class JsonPage:
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 # code from https://stackoverflow.com/a/39894555/4047204
@@ -17,8 +23,12 @@ title: "%s"
         self.text += newText
 
     def handle_toggle_block(self, block):
+        properties = self.get_properties_from_title(block.title)
+        self.update_mdx(
+            f"<{properties.title}{properties.properties_string}>")
+
+        # handle child blocks recursively
         toggleChildren = block.children
-        self.update_mdx(f"<{block.title}>")
         for idx, childBlock in enumerate(toggleChildren):
             if (childBlock.type == "toggle"):
                 self.handle_toggle_block(childBlock)
@@ -26,7 +36,26 @@ title: "%s"
                 self.update_mdx(childBlock.title)
                 if (idx + 1) < len(toggleChildren):
                     self.update_mdx("<br/>")
-        self.update_mdx(f"</{block.title}>")
+
+        self.update_mdx(f"</{properties.title}>")
+
+    def get_properties_from_title(self, title):
+        jsonPage = JsonPage()
+
+        splited = title.split(" ")
+        setattr(jsonPage, 'title', splited[0])
+
+        properties_string = ""
+        for i in range(1, len(splited)):
+            properties_string += splited[i] + " "
+
+        if (properties_string):
+            setattr(jsonPage, 'properties_string',
+                    ' ' + properties_string[:-1])  # add space before the last character (jsx syntax)
+        else:
+            setattr(jsonPage, 'properties_string', '')
+
+        return jsonPage
 
 
 def convert():
