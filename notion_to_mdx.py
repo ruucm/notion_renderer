@@ -20,9 +20,12 @@ title: "%s"
         toggleChildren = block.children
         self.update_mdx(f"<{block.title}>")
         for idx, childBlock in enumerate(toggleChildren):
-            self.update_mdx(childBlock.title)
-            if (idx + 1) < len(toggleChildren):
-                self.update_mdx("<br/>")
+            if (childBlock.type == "toggle"):
+                self.handle_toggle_block(childBlock)
+            else:
+                self.update_mdx(childBlock.title)
+                if (idx + 1) < len(toggleChildren):
+                    self.update_mdx("<br/>")
         self.update_mdx(f"</{block.title}>")
 
 
