@@ -22,6 +22,27 @@ title: "%s"
     def update_mdx(self, newText):
         self.text += newText
 
+    def set_post_path(self, path):
+        self.postPath = path
+
+    def handle_block(self, block):
+        if block.type == "header":
+            self.update_mdx("# " + block.title)
+        elif block.type == "sub_header":
+            self.update_mdx("## " + block.title)
+        elif block.type == "text":
+            self.update_mdx(block.title)
+        elif block.type == "image":
+            self.update_mdx(
+                f'\n\n{handleImage(block.source, self.postPath)}\n')
+        elif block.type == "toggle":
+            self.handle_toggle_block(block)
+        elif block.type == "collection_view_page":
+            rows = block.collection.get_rows()
+            print('rows', rows)
+
+        self.update_mdx("\n")  # add a newline
+
     def handle_toggle_block(self, block):
         properties = self.get_properties_from_title(block.title)
         self.update_mdx(
@@ -33,7 +54,7 @@ title: "%s"
             if (childBlock.type == "toggle"):
                 self.handle_toggle_block(childBlock)
             else:
-                self.update_mdx(childBlock.title)
+                self.handle_block(childBlock)
                 if (idx + 1) < len(toggleChildren):
                     self.update_mdx("<br/>")
 
@@ -98,23 +119,10 @@ def convert():
 
     # start generate MDX
     mdx = MDX()
+    mdx.set_post_path(postPath)
 
     for idx, block in enumerate(blocks):
-        if block.type == "header":
-            mdx.update_mdx("# " + block.title)
-        elif block.type == "sub_header":
-            mdx.update_mdx("## " + block.title)
-        elif block.type == "text":
-            mdx.update_mdx(block.title)
-        elif block.type == "image":
-            mdx.update_mdx(handleImage(block.source, idx, postPath))
-        elif block.type == "toggle":
-            mdx.handle_toggle_block(block)
-        elif block.type == "collection_view_page":
-            rows = block.collection.get_rows()
-            print('rows', rows)
-
-        mdx.update_mdx("\n")  # add a newline
+        mdx.handle_block(block)
 
     file = open(f'{postPath}/{answers["fileName"]}', "w")
     file.write(mdx.text)
