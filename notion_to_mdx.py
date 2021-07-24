@@ -6,6 +6,17 @@ from notion_renderer.renderer import objectify_notion_blocks
 from utils import handleImage
 
 
+# code from https://stackoverflow.com/a/39894555/4047204
+class MDX(object):
+    def __init__(self):
+        self.text = """---
+title: "%s"
+---\n""" % ("My Notion Page")
+
+    def UpdateMDX(self, newText):
+        self.text += newText
+
+
 def convert():
     # start_prompt
     questions = [
@@ -29,6 +40,7 @@ def convert():
     ]
     answers = prompt(questions)
 
+    # get the notion_blocks
     targetPath = answers["targetPath"]
     postPath = f'{targetPath}/{answers["pageId"]}'
 
@@ -43,35 +55,31 @@ def convert():
         answers["pageId"],
     )
 
-    text = """---
-title: "%s"
----""" % (
-        "My Notion Page"
-    )
-    # text += "\n\n" + 'import * as System from "@harborschool/lighthouse"' + "\n\n"
+    # start generate MDX
+    mdx = MDX()
 
     for idx, block in enumerate(blocks):
         if block.type == "header":
-            text += "# " + block.title
+            mdx.UpdateMDX("# " + block.title)
         elif block.type == "sub_header":
-            text += "## " + block.title
+            mdx.UpdateMDX("## " + block.title)
         elif block.type == "text":
-            text += block.title
+            mdx.UpdateMDX(block.title)
         elif block.type == "image":
-            text += handleImage(block.source, idx, postPath)
+            mdx.UpdateMDX(handleImage(block.source, idx, postPath))
         elif block.type == "toggle":
             toggleChildren = block.children
-            text += f"<{block.title}>"
+            mdx.UpdateMDX(f"<{block.title}>")
             for idx, childBlock in enumerate(toggleChildren):
-                text += childBlock.title
+                mdx.UpdateMDX(childBlock.title)
                 if (idx + 1) < len(toggleChildren):
-                    text += "<br/>"
-            text += f"</{block.title}>"
+                    mdx.UpdateMDX("<br/>")
+            mdx.UpdateMDX(f"</{block.title}>")
 
-        text += "\n"
+        mdx.UpdateMDX("\n")
 
     file = open(f'{postPath}/{answers["fileName"]}', "w")
-    file.write(text)
+    file.write(mdx.text)
 
 
 if __name__ == "__main__":
