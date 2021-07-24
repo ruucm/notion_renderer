@@ -17,6 +17,12 @@ def convert():
         },
         {
             "type": "input",
+            "name": "fileName",
+            "message": "fileName",
+            "default": "index.mdx",
+        },
+        {
+            "type": "input",
             "name": "pageId",
             "message": "pageId",
         },
@@ -64,7 +70,7 @@ title: "%s"
 
         text += "\n"
 
-    file = open(f'{postPath}/index.mdx', "w")
+    file = open(f'{postPath}/{answers["fileName"]}', "w")
     file.write(text)
 
 
