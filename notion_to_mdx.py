@@ -81,6 +81,9 @@ def convert():
             mdx.update_mdx(handleImage(block.source, idx, postPath))
         elif block.type == "toggle":
             mdx.handle_toggle_block(block)
+        elif block.type == "collection_view_page":
+            rows = block.collection.get_rows()
+            print('rows', rows)
 
         mdx.update_mdx("\n")  # add a newline
 

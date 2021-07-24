@@ -55,6 +55,9 @@ def objectify_notion_blocks(token_v2, pageId, stringfy=False):
         elif block.type == "toggle":
             setattr(jsonPage, "title", block.title)
             setattr(jsonPage, "children", block.children)
+        elif block.type == "collection_view_page":
+            setattr(jsonPage, "title", block.title)
+            setattr(jsonPage, "collection", block.collection)
 
         if (stringfy):
             jsonStr = jsonPage.toJSON()
