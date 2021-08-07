@@ -5,6 +5,8 @@ from PyInquirer import print_json, prompt
 from notion_renderer.renderer import objectify_notion_blocks
 from utils import handleImage
 import json
+import getopt
+import sys
 
 
 class JsonPage:
@@ -80,31 +82,44 @@ title: "%s"
 
 
 def convert():
-    # start_prompt
-    questions = [
-        {
-            "type": "input",
-            "name": "targetPath",
-            "message": "Where you want to generate MDX files?",
-            "default": "./mdx/posts",
-        },
-        {
-            "type": "input",
-            "name": "fileName",
-            "message": "fileName",
-            "default": "index.mdx",
-        },
-        {
-            "type": "input",
-            "name": "pageId",
-            "message": "pageId",
-        },
-    ]
-    answers = prompt(questions)
+
+    argumentList = sys.argv[1:]
+    params = JsonPage()
+
+    if argumentList:
+        print('argumentList', argumentList)
+        setattr(params, 'targetPath', argumentList[0])
+        setattr(params, 'fileName', argumentList[1])
+        setattr(params, 'pageId', argumentList[2])
+    else:
+        # start_prompt
+        questions = [
+            {
+                "type": "input",
+                "name": "targetPath",
+                "message": "Where you want to generate MDX files?",
+                "default": "./mdx/posts",
+            },
+            {
+                "type": "input",
+                "name": "fileName",
+                "message": "fileName",
+                "default": "index.mdx",
+            },
+            {
+                "type": "input",
+                "name": "pageId",
+                "message": "pageId",
+            },
+        ]
+        answers = prompt(questions)
+
+        for key, value in answers.items():
+            setattr(params, key, value)
 
     # get the notion_blocks
-    targetPath = answers["targetPath"]
-    postPath = f'{targetPath}/{answers["pageId"]}'
+    targetPath = params.targetPath
+    postPath = f'{targetPath}/{params.pageId}'
 
     if not os.path.exists(targetPath):
         os.makedirs(targetPath)
@@ -114,7 +129,7 @@ def convert():
 
     blocks = objectify_notion_blocks(
         "7f03ff0043f4f1b5367552a37201efb3e815abf50eb7170db3df48f1ac4a69fc998e42fbdfcb0f57f57c296226f10d51c96f218ad27e1b6067c68fcd191f55bda1dced6b384f159b9184974eb3bb",
-        answers["pageId"],
+        params.pageId,
     )
 
     # start generate MDX
@@ -124,7 +139,7 @@ def convert():
     for idx, block in enumerate(blocks):
         mdx.handle_block(block)
 
-    file = open(f'{postPath}/{answers["fileName"]}', "w")
+    file = open(f'{postPath}/{params.fileName}', "w")
     file.write(mdx.text)
 
 
