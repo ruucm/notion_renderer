@@ -16,13 +16,19 @@ class JsonPage:
 
 # code from https://stackoverflow.com/a/39894555/4047204
 class MDX(object):
-    def __init__(self):
+    def __init__(self, page):
         self.text = """---
 title: "%s"
----\n""" % ("My Notion Page")
+---""" % (page.title)
+
+        self.add_newlines(3)
 
     def update_mdx(self, newText):
         self.text += newText
+
+    def add_newlines(self, lineNum):
+        for i in range(lineNum):
+            self.update_mdx("\n")
 
     def set_post_path(self, path):
         self.postPath = path
@@ -43,12 +49,13 @@ title: "%s"
             rows = block.collection.get_rows()
             print('rows', rows)
 
-        self.update_mdx("\n")  # add a newline
+        self.add_newlines(5)  # add a newline
 
     def handle_toggle_block(self, block):
         properties = self.get_properties_from_title(block.title)
         self.update_mdx(
             f"<{properties.title}{properties.properties_string}>")
+        self.add_newlines(3)
 
         # handle child blocks recursively
         toggleChildren = block.children
@@ -127,13 +134,13 @@ def convert():
     if not os.path.exists(postPath):
         os.makedirs(postPath)
 
-    blocks = objectify_notion_blocks(
+    [page, blocks] = objectify_notion_blocks(
         "7f03ff0043f4f1b5367552a37201efb3e815abf50eb7170db3df48f1ac4a69fc998e42fbdfcb0f57f57c296226f10d51c96f218ad27e1b6067c68fcd191f55bda1dced6b384f159b9184974eb3bb",
         params.pageId,
     )
 
     # start generate MDX
-    mdx = MDX()
+    mdx = MDX(page)
     mdx.set_post_path(postPath)
 
     for idx, block in enumerate(blocks):

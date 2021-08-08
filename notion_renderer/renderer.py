@@ -65,4 +65,4 @@ def objectify_notion_blocks(token_v2, pageId, stringfy=False):
         else:
             results.append(jsonPage)
 
-    return results
+    return [page, results]
