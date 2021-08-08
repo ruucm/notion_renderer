@@ -63,6 +63,17 @@ title: "%s"
         elif block.type == "collection_view_page":
             rows = block.collection.get_rows()
             print('rows', rows)
+        elif block.type == "column_list":
+            self.update_mdx(f'<FlexBox>')
+            self.add_newlines(2)
+            for idx, column in enumerate(block.children):
+                self.update_mdx(f'<FlexItem>')
+                self.add_newlines(2)
+                for idx, childBlock in enumerate(column.children):
+                    self.handle_block(childBlock)
+                self.update_mdx(f'</FlexItem>')
+                self.add_newlines(2)
+            self.update_mdx(f'</FlexBox>')
 
         self.add_newlines(2)  # add a newline
 
