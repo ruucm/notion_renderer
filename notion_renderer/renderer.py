@@ -38,31 +38,30 @@ def objectify_notion_blocks(token_v2, pageId, stringfy=False):
     client = NotionClient(token_v2)
     page = client.get_block("https://www.notion.so/" + pageId)
 
-    results = []
+    # results = []
 
-    for idx, block in enumerate(page.children):
-        jsonPage = JsonPage()
-        print("block.type", block.type)
-        setattr(jsonPage, "type", block.type)
-        if (
-            block.type == "text"
-            or block.type == "header"
-            or block.type == "sub_header"
-        ):
-            setattr(jsonPage, "title", block.title)
-        elif block.type == "image":
-            setattr(jsonPage, "source", block.source)
-        elif block.type == "toggle":
-            setattr(jsonPage, "title", block.title)
-            setattr(jsonPage, "children", block.children)
-        elif block.type == "collection_view_page":
-            setattr(jsonPage, "title", block.title)
-            setattr(jsonPage, "collection", block.collection)
+    # for idx, block in enumerate(page.children):
+    #     jsonPage = JsonPage()
+    #     setattr(jsonPage, "type", block.type)
+    #     if (
+    #         block.type == "text"
+    #         or block.type == "header"
+    #         or block.type == "sub_header"
+    #     ):
+    #         setattr(jsonPage, "title", block.title)
+    #     elif block.type == "image":
+    #         setattr(jsonPage, "source", block.source)
+    #     elif block.type == "toggle":
+    #         setattr(jsonPage, "title", block.title)
+    #         setattr(jsonPage, "children", block.children)
+    #     elif block.type == "collection_view_page":
+    #         setattr(jsonPage, "title", block.title)
+    #         setattr(jsonPage, "collection", block.collection)
 
-        if (stringfy):
-            jsonStr = jsonPage.toJSON()
-            results.append(jsonStr)
-        else:
-            results.append(jsonPage)
+    #     if (stringfy):
+    #         jsonStr = jsonPage.toJSON()
+    #         results.append(jsonStr)
+    #     else:
+    #         results.append(jsonPage)
 
-    return [page, results]
+    return [page, page.children]

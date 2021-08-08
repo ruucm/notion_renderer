@@ -4,16 +4,25 @@ import re
 import urllib.request
 from os import path
 from urllib.parse import unquote
+import consts
 
 import requests
 
 
-def handleImage(source, targetPath):
+def handleImage(source, postPath):
     url = unquote(source)
 
     for filename in re.findall(r"/([^/]+\.(?:jpg|jpeg|gif|png))", url):
-        download(targetPath, f"{targetPath}/{filename}", url)
+        download(postPath, f"{postPath}/{filename}", url)
         return f"![{filename}](./{filename})"
+
+
+def handleVideo(source, staticPath, width):
+    url = unquote(source)
+
+    for filename in re.findall(r"/([^/]+\.(?:mov|mp4))", url):
+        download(staticPath, f"{staticPath}/{filename}", url)
+        return f'<video src="{f"{staticPath}/{filename}".replace(consts.STATIC_DIR, "")}" width="{width}" />'
 
 
 def getFileExtension(fileName):
