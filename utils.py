@@ -57,3 +57,12 @@ def download(base, filePath, source):
         file_data = requests.get(source).content
         with open(filePath, "wb") as handler:
             handler.write(file_data)
+
+
+def shouldShrink(column):
+    result = False
+    for idx, childBlock in enumerate(column.children):
+        if childBlock.type == "text":  # if column has a text, it shouldn't be shrinked.
+            result = True
+
+    return result

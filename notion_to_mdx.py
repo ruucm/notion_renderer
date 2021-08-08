@@ -67,7 +67,8 @@ title: "%s"
             self.update_mdx(f'<FlexBox>')
             self.add_newlines(2)
             for idx, column in enumerate(block.children):
-                self.update_mdx(f'<FlexItem>')
+                self.update_mdx(
+                    f'<FlexItem {"" if utils.shouldShrink(column) else "noShrink"}>')
                 self.add_newlines(2)
                 for idx, childBlock in enumerate(column.children):
                     self.handle_block(childBlock)
