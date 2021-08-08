@@ -5,8 +5,14 @@ import urllib.request
 from os import path
 from urllib.parse import unquote
 import consts
+import json
 
 import requests
+
+
+class JsonPage:
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 def handleImage(source, postPath):
@@ -65,4 +71,59 @@ def shouldShrink(column):
         if childBlock.type == "text":  # if column has a text, it shouldn't be shrinked.
             result = True
 
+    return result
+
+
+def get_properties_from_toggle(title):
+    jsonPage = JsonPage()
+
+    splited = title.split(" ")
+    setattr(jsonPage, 'title', splited[0])
+
+    properties_string = ""
+    for i in range(1, len(splited)):
+        properties_string += splited[i] + " "
+
+    if (properties_string):
+        setattr(jsonPage, 'properties_string',
+                ' ' + properties_string[:-1])  # add space before the last character (jsx syntax)
+    else:
+        setattr(jsonPage, 'properties_string', '')
+
+    return jsonPage
+
+
+def getPureTitle(title):
+    s_without_parens = re.sub('\(.+?\)', '', title)
+    text_in_brackets = re.findall('{(.+?)}', s_without_parens)
+    jsonStr = f'{{{text_in_brackets[0]}}}'
+
+    pure_title = title.replace(f' {jsonStr}', '')
+
+    return pure_title
+
+
+def getJsxProperties(title):
+    s_without_parens = re.sub('\(.+?\)', '', title)
+    text_in_brackets = re.findall('{(.+?)}', s_without_parens)
+    jsonStr = f'{{{text_in_brackets[0]}}}'
+    print('jsonStr', jsonStr)
+
+    pure_title = title.replace(f' {jsonStr}', '')
+
+    propertiesDict = stringJsonToDict(jsonStr)
+
+    return propertiesDictToJsx(propertiesDict)
+
+
+def stringJsonToDict(jsonString):
+    return json.loads(jsonString)
+
+
+def propertiesDictToJsx(propertiesDict):
+    result = ""
+    for index, (key, value) in enumerate(propertiesDict.items()):
+        result += f'{key}="{value}"'
+        if (index < len(propertiesDict) - 1):
+            result += " "
     return result

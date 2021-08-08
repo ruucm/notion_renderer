@@ -12,11 +12,6 @@ import sys
 import re
 
 
-class JsonPage:
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-
-
 # code from https://stackoverflow.com/a/39894555/4047204
 class MDX(object):
     def __init__(self, page):
@@ -48,16 +43,20 @@ title: "%s"
         elif block.type == "text":
             self.update_mdx(block.title)
         elif block.type == "image":
+            print('block.caption', block.caption)
+            self.update_mdx(
+                f'<Block width="{block.width}px" {utils.getJsxProperties(block.caption)}>')
+            self.add_newlines(2)
             self.update_mdx(
                 f'{utils.handleImage(block.source, self.postPath)}')
+            self.add_newlines(2)
+            self.update_mdx(f'</Block>')
         elif block.type == "video":
             self.update_mdx(
                 f'{utils.handleVideo(block.source, self.staticPath, block.width)}')
         elif block.type == "callout":
-            [pure_title, property] = self.get_properties_from_title(
-                block.title)
             self.update_mdx(
-                f"<button {f'{property.key}={property.value}'}>{pure_title}</button>")
+                f"<button {utils.getJsxProperties(block.title)}>{utils.getPureTitle(block.title)}</button>")
         elif block.type == "toggle":
             self.handle_toggle_block(block)
         elif block.type == "collection_view_page":
@@ -75,11 +74,14 @@ title: "%s"
                 self.update_mdx(f'</FlexItem>')
                 self.add_newlines(2)
             self.update_mdx(f'</FlexBox>')
+        elif block.type == "embed":
+            self.update_mdx(
+                f'<iframe src="{block.source}" width="{block.width}px" height="{block.height}px" />')
 
         self.add_newlines(2)  # add a newline
 
     def handle_toggle_block(self, block):
-        properties = self.get_properties_from_toggle(block.title)
+        properties = utils.get_properties_from_toggle(block.title)
         self.update_mdx(
             f"<{properties.title}{properties.properties_string}>")
         self.add_newlines(2)
@@ -98,42 +100,11 @@ title: "%s"
         self.update_mdx(f"</{properties.title}>")
         self.add_newlines(2)
 
-    def get_properties_from_toggle(self, title):
-        jsonPage = JsonPage()
-
-        splited = title.split(" ")
-        setattr(jsonPage, 'title', splited[0])
-
-        properties_string = ""
-        for i in range(1, len(splited)):
-            properties_string += splited[i] + " "
-
-        if (properties_string):
-            setattr(jsonPage, 'properties_string',
-                    ' ' + properties_string[:-1])  # add space before the last character (jsx syntax)
-        else:
-            setattr(jsonPage, 'properties_string', '')
-
-        return jsonPage
-
-    def get_properties_from_title(self, title):
-        s_without_parens = re.sub('\(.+?\)', '', title)
-        text_in_brackets = re.findall('{(.+?)}', s_without_parens)
-
-        pure_title = title.replace(f' {{{text_in_brackets[0]}}}', '')
-
-        splited = text_in_brackets[0].split(":")
-        property = JsonPage()
-        setattr(property, 'key', splited[0].replace(' ', ''))
-        setattr(property, 'value', splited[1].replace(' ', ''))
-
-        return [pure_title, property]
-
 
 def convert():
 
     argumentList = sys.argv[1:]
-    params = JsonPage()
+    params = utils.JsonPage()
     basePath = "mdx-pages"
 
     if argumentList:
