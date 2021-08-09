@@ -15,20 +15,25 @@ class JsonPage:
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
+def getMediaName(url):
+    for filename in re.findall(r"/([^/]+\.(?:jpg|jpeg|gif|png|mov|mp4))", url):
+        return filename
+
+
 def handleImage(source, postPath):
     url = unquote(source)
+    filename = getMediaName(url)
 
-    for filename in re.findall(r"/([^/]+\.(?:jpg|jpeg|gif|png))", url):
-        download(postPath, f"{postPath}/{filename}", url)
-        return f"![{filename}](./{filename})"
+    download(postPath, f"{postPath}/{filename}", url)
+    return f"![{filename}](./{filename})"
 
 
 def handleVideo(source, staticPath, width):
     url = unquote(source)
+    filename = getMediaName(url)
 
-    for filename in re.findall(r"/([^/]+\.(?:mov|mp4))", url):
-        download(staticPath, f"{staticPath}/{filename}", url)
-        return f'<video src="{f"{staticPath}/{filename}".replace(consts.STATIC_DIR, "")}" width="{width}" />'
+    download(staticPath, f"{staticPath}/{filename}", url)
+    return f'<video src="{f"{staticPath}/{filename}".replace(consts.STATIC_DIR, "")}" width="{width}" />'
 
 
 def getFileExtension(fileName):
@@ -103,15 +108,18 @@ def getPureTitle(title):
     return pure_title
 
 
-def getJsxProperties(title):
-    s_without_parens = re.sub('\(.+?\)', '', title)
-    text_in_brackets = re.findall('{(.+?)}', s_without_parens)
-    jsonStr = f'{{{text_in_brackets[0]}}}'
-    print('jsonStr', jsonStr)
+def getJsxProperties(str):
+    if (str):
+        s_without_parens = re.sub('\(.+?\)', '', str)
+        text_in_brackets = re.findall('{(.+?)}', s_without_parens)
+        jsonStr = f'{{{text_in_brackets[0]}}}'
+        print('jsonStr', jsonStr)
 
-    py_obj = demjson.decode(jsonStr)
+        py_obj = demjson.decode(jsonStr)
 
-    return propertiesDictToJsx(py_obj)
+        return propertiesDictToJsx(py_obj)
+    else:
+        return ""
 
 
 def stringJsonToDict(jsonString):
