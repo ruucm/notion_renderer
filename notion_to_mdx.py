@@ -73,6 +73,11 @@ title: "%s"
         # elif block.type == "collection_view_page":
         #     rows = block.collection.get_rows()
         #     print('rows', rows)
+        elif block.type == "quote":
+            print("Open Quote Block!")
+            self.property_block_opened = True
+            self.update_mdx(
+                f'<Block {utils.getJsxProperties(block.title)}>')
         elif block.type == "column_list":
             self.update_mdx(f'<FlexBox>')
             self.add_newlines(2)
@@ -94,6 +99,11 @@ title: "%s"
         elif block.type == "embed":
             self.update_mdx(
                 f'<iframe src="{block.source}" width="{block.width}px" height="{block.height}px" />')
+
+        if (self.property_block_opened and block.type != "quote"):
+            print("Close Quote Block!")
+            self.update_mdx("</Block>")
+            self.property_block_opened = False
 
         self.add_newlines(2)  # add a newline
 
