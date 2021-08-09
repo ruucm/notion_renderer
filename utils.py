@@ -40,6 +40,18 @@ def getFileExtension(fileName):
     return os.path.splitext(fileName)[1]
 
 
+def download(base, filePath, source):
+    if source != None and checkNeedDownload(filePath, source):
+        try:
+            os.mkdir(base)
+        except:
+            pass
+        # download
+        file_data = requests.get(source).content
+        with open(filePath, "wb") as handler:
+            handler.write(file_data)
+
+
 def checkNeedDownload(existingFilePath, newSource):
     # check existing file
     if path.exists(existingFilePath):
@@ -56,18 +68,6 @@ def checkNeedDownload(existingFilePath, newSource):
         return True
     else:
         return False
-
-
-def download(base, filePath, source):
-    if source != None and checkNeedDownload(filePath, source):
-        try:
-            os.mkdir(base)
-        except:
-            pass
-        # download
-        file_data = requests.get(source).content
-        with open(filePath, "wb") as handler:
-            handler.write(file_data)
 
 
 def shouldShrink(column):
