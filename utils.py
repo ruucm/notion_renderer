@@ -75,7 +75,12 @@ def checkNeedDownload(existingFilePath, newSource):
 def shouldShrink(column):
     result = False
     for idx, childBlock in enumerate(column.children):
-        if childBlock.type == "text":  # if column has a text, it shouldn't be shrinked.
+        # recursively check nested columns
+        if (childBlock.type == "column_list"):
+            for idx, column in enumerate(childBlock.children):
+                result = shouldShrink(column)
+        # if column has a text, it shouldn't be shrinked.
+        elif hasattr(childBlock, 'title'):
             result = True
 
     return result
