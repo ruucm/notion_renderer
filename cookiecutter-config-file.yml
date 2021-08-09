@@ -5,7 +5,7 @@ default_context:
   project_description: "notion-py to MDX and REST API"
   organization: "notion_renderer"
   license: "MIT"
-  minimal_python_version: 3.5
+  minimal_python_version: 3.6.2
   github_name: "notion_renderer"
   email: "ruucm.a@gmail.com"
   version: "0.1.0"
