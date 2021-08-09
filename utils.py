@@ -70,6 +70,8 @@ def checkNeedDownload(existingFilePath, newSource):
         return False
 
 
+# Component & Properties
+
 def shouldShrink(column):
     result = False
     for idx, childBlock in enumerate(column.children):
@@ -77,6 +79,14 @@ def shouldShrink(column):
             result = True
 
     return result
+
+
+def getCompNamefromImageName(url):
+    filename = getMediaName(url)
+    extension = getFileExtension(filename)
+
+    splited = filename.split("-")
+    return splited[len(splited) - 1].replace(extension, "")
 
 
 def get_properties_from_toggle(title):

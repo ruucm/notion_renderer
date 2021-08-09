@@ -10,6 +10,7 @@ import json
 import getopt
 import sys
 import re
+from urllib.parse import unquote
 
 
 # code from https://stackoverflow.com/a/39894555/4047204
@@ -43,14 +44,23 @@ title: "%s"
         elif block.type == "text":
             self.update_mdx(block.title)
         elif block.type == "image":
-            print('block.caption', block.caption)
-            self.update_mdx(
-                f'<Block width="{block.width}px" {utils.getJsxProperties(block.caption)}>')
-            self.add_newlines(2)
-            self.update_mdx(
-                f'{utils.handleImage(block.source, self.postPath)}')
-            self.add_newlines(2)
-            self.update_mdx(f'</Block>')
+            url = unquote(block.source)
+            if "comp-" in utils.getMediaName(url):
+                compName = utils.getCompNamefromImageName(url)
+                print('compName', compName)
+                self.update_mdx(
+                    f'<{compName} {utils.getJsxProperties(block.caption)}>')
+                self.update_mdx(
+                    f'</{compName}>')
+            else:
+                print('block.caption', block.caption)
+                self.update_mdx(
+                    f'<Block width="{block.width}px" {utils.getJsxProperties(block.caption)}>')
+                self.add_newlines(2)
+                self.update_mdx(
+                    f'{utils.handleImage(block.source, self.postPath)}')
+                self.add_newlines(2)
+                self.update_mdx(f'</Block>')
         elif block.type == "video":
             self.update_mdx(
                 f'{utils.handleVideo(block.source, self.staticPath, block.width)}')
