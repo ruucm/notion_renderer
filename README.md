@@ -9,3 +9,11 @@
 
 - Slower
 - Dynamic
+
+## Links
+
+https://github.com/TezRomacH/python-package-template
+
+https://python-poetry.org/
+
+https://pypi.org/project/notion-renderer/

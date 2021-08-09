@@ -1,5 +1,5 @@
 default_language_version:
-  python: python3.5
+  python: python3.6.2
 
 default_stages: [commit, push]
 
