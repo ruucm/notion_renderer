@@ -6,8 +6,8 @@ from os import path
 from urllib.parse import unquote
 import consts
 import json
-
 import requests
+import demjson
 
 
 class JsonPage:
@@ -109,11 +109,9 @@ def getJsxProperties(title):
     jsonStr = f'{{{text_in_brackets[0]}}}'
     print('jsonStr', jsonStr)
 
-    pure_title = title.replace(f' {jsonStr}', '')
+    py_obj = demjson.decode(jsonStr)
 
-    propertiesDict = stringJsonToDict(jsonStr)
-
-    return propertiesDictToJsx(propertiesDict)
+    return propertiesDictToJsx(py_obj)
 
 
 def stringJsonToDict(jsonString):
