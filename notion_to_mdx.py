@@ -13,13 +13,14 @@ import re
 from urllib.parse import unquote
 
 
-# code from https://stackoverflow.com/a/39894555/4047204
 class MDX(object):
     def __init__(self, page):
         self.text = """---
 title: "%s"
 ---""" % (page.title)
         self.add_newlines(2)
+
+        self.column_properties = ""
 
     def update_mdx(self, newText):
         self.text += newText
@@ -47,7 +48,6 @@ title: "%s"
             url = unquote(block.source)
             if "comp-" in utils.getMediaName(url):
                 compName = utils.getCompNamefromImageName(url)
-                print('compName', compName)
                 self.update_mdx(
                     f'<{compName} {utils.getJsxProperties(block.caption)}>')
                 self.update_mdx(
@@ -69,15 +69,21 @@ title: "%s"
                 f"<button {utils.getJsxProperties(block.title)}>{utils.getPureTitle(block.title)}</button>")
         elif block.type == "toggle":
             self.handle_toggle_block(block)
-        elif block.type == "collection_view_page":
-            rows = block.collection.get_rows()
-            print('rows', rows)
+        # elif block.type == "collection_view_page":
+        #     rows = block.collection.get_rows()
+        #     print('rows', rows)
         elif block.type == "column_list":
             self.update_mdx(f'<FlexBox>')
             self.add_newlines(2)
             for idx, column in enumerate(block.children):
+                firstColumnBlock = column.children[0]
+                if (firstColumnBlock.type == 'quote'):
+                    self.column_properties = utils.getJsxProperties(
+                        firstColumnBlock.title)
+
                 self.update_mdx(
-                    f'<FlexItem{"" if utils.shouldShrink(column) else " noShrink"}>')
+                    f'<FlexItem{"" if utils.shouldShrink(column) else " noShrink"}{" " if self.column_properties else ""}{self.column_properties}>')
+                self.column_properties = ""
                 self.add_newlines(2)
                 for idx, childBlock in enumerate(column.children):
                     self.handle_block(childBlock)

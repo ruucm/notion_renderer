@@ -128,7 +128,6 @@ def getJsxProperties(str):
         s_without_parens = re.sub('\(.+?\)', '', str)
         text_in_brackets = re.findall('{(.+?)}', s_without_parens)
         jsonStr = f'{{{text_in_brackets[0]}}}'
-        print('jsonStr', jsonStr)
 
         py_obj = demjson.decode(jsonStr)
 
