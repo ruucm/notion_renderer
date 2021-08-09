@@ -20,6 +20,7 @@ title: "%s"
 ---""" % (page.title)
         self.add_newlines(2)
 
+        self.property_block_opened = False
         self.column_properties = ""
 
     def update_mdx(self, newText):
@@ -77,7 +78,7 @@ title: "%s"
             self.add_newlines(2)
             for idx, column in enumerate(block.children):
                 firstColumnBlock = column.children[0]
-                if (firstColumnBlock.type == 'quote'):
+                if (firstColumnBlock.type == 'code'):
                     self.column_properties = utils.getJsxProperties(
                         firstColumnBlock.title)
 
