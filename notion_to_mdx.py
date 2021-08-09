@@ -50,13 +50,13 @@ title: "%s"
             if "comp-" in utils.getMediaName(url):
                 compName = utils.getCompNamefromImageName(url)
                 self.update_mdx(
-                    f'<{compName} {utils.getJsxProperties(block.caption)}>')
+                    f'<{compName} {utils.getJsxPropertiesFromStr(block.caption)}>')
                 self.update_mdx(
                     f'</{compName}>')
             else:
                 print('block.caption', block.caption)
                 self.update_mdx(
-                    f'<Block width="{block.width}px" {utils.getJsxProperties(block.caption)}>')
+                    f'<Block width="{block.width}px" {utils.getJsxPropertiesFromStr(block.caption)}>')
                 self.add_newlines(2)
                 self.update_mdx(
                     f'{utils.handleImage(block.source, self.postPath)}')
@@ -67,7 +67,7 @@ title: "%s"
                 f'{utils.handleVideo(block.source, self.staticPath, block.width)}')
         elif block.type == "callout":
             self.update_mdx(
-                f"<button {utils.getJsxProperties(block.title)}>{utils.getPureTitle(block.title)}</button>")
+                f"<button {utils.getJsxPropertiesFromStr(block.title)}>{utils.getPureTitle(block.title)}</button>")
         elif block.type == "toggle":
             self.handle_toggle_block(block)
         # elif block.type == "collection_view_page":
@@ -77,14 +77,14 @@ title: "%s"
             print("Open Quote Block!")
             self.property_block_opened = True
             self.update_mdx(
-                f'<Block {utils.getJsxProperties(block.title)}>')
+                f'<Block {utils.getJsxPropertiesFromStr(block.title)}>')
         elif block.type == "column_list":
             self.update_mdx(f'<FlexBox>')
             self.add_newlines(2)
             for idx, column in enumerate(block.children):
                 firstColumnBlock = column.children[0]
                 if (firstColumnBlock.type == 'code'):
-                    self.column_properties = utils.getJsxProperties(
+                    self.column_properties = utils.getJsxPropertiesFromStr(
                         firstColumnBlock.title)
 
                 self.update_mdx(

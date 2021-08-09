@@ -123,7 +123,7 @@ def getPureTitle(title):
     return pure_title
 
 
-def getJsxProperties(str):
+def getJsxPropertiesFromStr(str):
     if (str):
         s_without_parens = re.sub('\(.+?\)', '', str)
         text_in_brackets = re.findall('{(.+?)}', s_without_parens)
