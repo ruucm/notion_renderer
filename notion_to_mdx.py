@@ -36,6 +36,12 @@ title: "%s"
     def set_static_path(self, path):
         self.staticPath = path
 
+    def set_page_id(self, id):
+        self.pageId = id
+
+    def set_category(self, category):
+        self.category = category
+
     def handle_block(self, block):
         print("block.type", block.type)
         # print("block", block)
@@ -99,6 +105,9 @@ title: "%s"
         elif block.type == "embed":
             self.update_mdx(
                 f'<iframe src="{block.source}" width="{block.width}px" height="{block.height}px" />')
+        elif block.type == "page":
+            self.update_mdx(
+                f'[{block.title}](/{self.category}/{block.id.replace("-","")})')
 
         if (self.property_block_opened and block.type != "quote"):
             print("Close Quote Block!")
@@ -132,7 +141,7 @@ def convert():
 
     argumentList = sys.argv[1:]
     params = utils.JsonPage()
-    basePath = "."
+    basePath = "./site-templates/template-nextjs-lighthouse/"
 
     if argumentList:
         print('argumentList', argumentList)
@@ -174,9 +183,9 @@ def convert():
 
     # get the notion_blocks
     # targetPath = f"{basePath}/{params.category}"
-    postPath = f'{basePath}/{params.category}/{params.pageId}'
+    postPath = f'{basePath}/{params.category}'
     # staticPath = f'{consts.STATIC_DIR}/{basePath}/{params.category}/{params.pageId}' # for gatsbyjs
-    staticPath = params.assetsPath # for nextjs
+    staticPath = params.assetsPath  # for nextjs
 
     if not os.path.exists(basePath):
         os.makedirs(basePath)
@@ -196,6 +205,8 @@ def convert():
     mdx = MDX(page)
     mdx.set_post_path(postPath)
     mdx.set_static_path(staticPath)
+    mdx.set_page_id(params.pageId)
+    mdx.set_category(params.category)
 
     for idx, block in enumerate(blocks):
         mdx.handle_block(block)
