@@ -59,7 +59,7 @@ title: "%s"
                     f'<Block width="{block.width}px" {utils.getJsxPropertiesFromStr(block.caption)}>')
                 self.add_newlines(2)
                 self.update_mdx(
-                    f'{utils.handleImage(block.source, self.postPath)}')
+                    f'{utils.handleImage(block.source, self.staticPath)}')
                 self.add_newlines(2)
                 self.update_mdx(f'</Block>')
         elif block.type == "video":
@@ -132,21 +132,21 @@ def convert():
 
     argumentList = sys.argv[1:]
     params = utils.JsonPage()
-    basePath = "mdx-pages"
+    basePath = "."
 
     if argumentList:
         print('argumentList', argumentList)
-        setattr(params, 'category', argumentList[0])
+        setattr(params, 'pageId', argumentList[0])
         setattr(params, 'fileName', argumentList[1])
-        setattr(params, 'pageId', argumentList[2])
+        setattr(params, 'category', argumentList[2])
+        setattr(params, 'assetsPath', argumentList[3])
     else:
         # start_prompt
         questions = [
             {
                 "type": "input",
-                "name": "category",
-                "message": "Where you want to generate MDX files?",
-                "default": "landing-page",
+                "name": "pageId",
+                "message": "pageId",
             },
             {
                 "type": "input",
@@ -156,8 +156,15 @@ def convert():
             },
             {
                 "type": "input",
-                "name": "pageId",
-                "message": "pageId",
+                "name": "category",
+                "message": "Where you want to generate MDX files?",
+                "default": "landing-page",
+            },
+            {
+                "type": "input",
+                "name": "assetsPath",
+                "message": "Where you want to save asset files? (image, video)",
+                "default": "public",
             },
         ]
         answers = prompt(questions)
@@ -168,7 +175,8 @@ def convert():
     # get the notion_blocks
     # targetPath = f"{basePath}/{params.category}"
     postPath = f'{basePath}/{params.category}/{params.pageId}'
-    staticPath = f'{consts.STATIC_DIR}/{basePath}/{params.category}/{params.pageId}'
+    # staticPath = f'{consts.STATIC_DIR}/{basePath}/{params.category}/{params.pageId}' # for gatsbyjs
+    staticPath = params.assetsPath # for nextjs
 
     if not os.path.exists(basePath):
         os.makedirs(basePath)

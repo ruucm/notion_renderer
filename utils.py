@@ -20,12 +20,12 @@ def getMediaName(url):
         return filename
 
 
-def handleImage(source, postPath):
+def handleImage(source, downloadPath):
     url = unquote(source)
     filename = getMediaName(url)
 
-    download(postPath, f"{postPath}/{filename}", url)
-    return f"![{filename}](./{filename})"
+    download(downloadPath, f"{downloadPath}/{filename}", url)
+    return f"![{filename}](/{filename})"
 
 
 def handleVideo(source, staticPath, width):
@@ -116,22 +116,28 @@ def get_properties_from_toggle(title):
 def getPureTitle(title):
     s_without_parens = re.sub('\(.+?\)', '', title)
     text_in_brackets = re.findall('{(.+?)}', s_without_parens)
-    jsonStr = f'{{{text_in_brackets[0]}}}'
+    if not text_in_brackets:
+        return title
+    else:
+        jsonStr = f'{{{text_in_brackets[0]}}}'
 
-    pure_title = title.replace(f' {jsonStr}', '')
+        pure_title = title.replace(f' {jsonStr}', '')
 
-    return pure_title
+        return pure_title
 
 
 def getJsxPropertiesFromStr(str):
     if (str):
         s_without_parens = re.sub('\(.+?\)', '', str)
         text_in_brackets = re.findall('{(.+?)}', s_without_parens)
-        jsonStr = f'{{{text_in_brackets[0]}}}'
+        if not text_in_brackets:
+            return ""
+        else:
+            jsonStr = f'{{{text_in_brackets[0]}}}'
 
-        py_obj = demjson.decode(jsonStr)
+            py_obj = demjson.decode(jsonStr)
 
-        return propertiesDictToJsx(py_obj)
+            return propertiesDictToJsx(py_obj)
     else:
         return ""
 
